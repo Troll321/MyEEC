@@ -68,7 +68,8 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
-    media: Media;
+    soal: Soal;
+    files: File;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -77,7 +78,8 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
+    soal: SoalSelect<false> | SoalSelect<true>;
+    files: FilesSelect<false> | FilesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -122,6 +124,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  username: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -142,11 +145,98 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
+ * via the `definition` "soal".
  */
-export interface Media {
+export interface Soal {
   id: string;
-  alt: string;
+  judul: string;
+  bidang: 'matematika' | 'fisika' | 'komputer';
+  pembuat: string | User;
+  /**
+   * Digunakan dalam babak ...
+   */
+  status: 'draft' | 'penyisihan' | 'semifinal' | 'final';
+  vote_penyisihan?: (string | User)[] | null;
+  vote_semifinal?: (string | User)[] | null;
+  vote_final?: (string | User)[] | null;
+  file?: (string | null) | File;
+  deskripsi: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  jenis: (
+    | {
+        jawaban: number;
+        pilihan?:
+          | {
+              value?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: any;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'pilgan';
+      }
+    | {
+        jawaban?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'essai';
+      }
+  )[];
+  /**
+   * Tag / Materi / Penanda untuk soal ini
+   */
+  tag?: string[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
+export interface File {
+  id: string;
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -188,8 +278,12 @@ export interface PayloadLockedDocument {
         value: string | User;
       } | null)
     | ({
-        relationTo: 'media';
-        value: string | Media;
+        relationTo: 'soal';
+        value: string | Soal;
+      } | null)
+    | ({
+        relationTo: 'files';
+        value: string | File;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,6 +332,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  username?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -257,9 +352,51 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media_select".
+ * via the `definition` "soal_select".
  */
-export interface MediaSelect<T extends boolean = true> {
+export interface SoalSelect<T extends boolean = true> {
+  judul?: T;
+  bidang?: T;
+  pembuat?: T;
+  status?: T;
+  vote_penyisihan?: T;
+  vote_semifinal?: T;
+  vote_final?: T;
+  file?: T;
+  deskripsi?: T;
+  jenis?:
+    | T
+    | {
+        pilgan?:
+          | T
+          | {
+              jawaban?: T;
+              pilihan?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        essai?:
+          | T
+          | {
+              jawaban?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  tag?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files_select".
+ */
+export interface FilesSelect<T extends boolean = true> {
   alt?: T;
   updatedAt?: T;
   createdAt?: T;

@@ -1,0 +1,6 @@
+span.editor-equation {
+  display: inline-block;
+  width: max-content;
+  min-width: 2px;
+  height: max-content;
+}
