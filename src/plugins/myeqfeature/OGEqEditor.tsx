@@ -10,7 +10,6 @@ import type { JSX, Ref, RefObject } from "react"
 
 import "./OGEqEditor.css"
 
-import { isHTMLElement } from "@payloadcms/richtext-lexical/lexical"
 import { ChangeEvent, forwardRef } from "react"
 
 type BaseEquationEditorProps = {
@@ -26,8 +25,6 @@ function EquationEditor(
   const onChange = (event: ChangeEvent) => {
     setEquation((event.target as HTMLInputElement).value)
   }
-
-  console.log(inline)
 
   return inline ? (
     <span className="EquationEditor_inputBackground">

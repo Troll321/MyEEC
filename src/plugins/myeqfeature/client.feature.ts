@@ -15,11 +15,12 @@ import { EquationsPlugin, INSERT_EQUATION_COMMAND } from "./OGEqPlugin"
 
 import { MyIcon } from "./MyIcon"
 import { EquationNode } from "../myeqfeature/OGEqNode"
+import { myEqMDTransformer } from "./myEqMDTransformer"
 
 export const EquationClientFeature = createClientFeature({
   nodes: [EquationNode],
   plugins: [{ Component: EquationsPlugin, position: "normal" }],
-  //   markdownTransformers: [MyMarkdownTransformer],
+  markdownTransformers: myEqMDTransformer,
   toolbarInline: {
     groups: [
       toolbarFormatGroupWithItems([

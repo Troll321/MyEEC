@@ -3,13 +3,12 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical"
 import path from "path"
 import { buildConfig } from "payload"
 import { fileURLToPath } from "url"
-import sharp from "sharp"
 
 import { Users } from "./collections/Users"
 import { Soal } from "./collections/Soal"
 import { Files } from "./collections/Files"
 import { EquationFeature } from "./plugins/myeqfeature/feature.server"
-import { s3Storage } from "@payloadcms/storage-s3"
+import { supabaseStorage } from "unoff-payloadcms-supabase-storage-adapter"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,6 +20,11 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+  },
+  upload: {
+    limits: {
+      fileSize: 4.5 * 1024 * 1024,
     },
   },
   collections: [Users, Soal, Files],
@@ -45,26 +49,24 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || "",
   }),
-  sharp,
   plugins: [
-    s3Storage({
+    supabaseStorage({
+      bucket: process.env.SUPABASE_BUCKET!,
       collections: {
-        files: true,
-      },
-      signedDownloads: {
-        expiresIn: 60,
-        shouldUseSignedURL: () => {
-          return true
+        files: {
+          disableLocalStorage: true,
+          disablePayloadAccessControl: true,
+          prefix: "files",
+          signedDownloads: true,
         },
       },
-      bucket: process.env.S3_BUCKET!,
+      upsert: true,
+      // clientUploads: true,
       config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY!,
-          secretAccessKey: process.env.S3_SECRET_KEY!,
-        },
-        region: process.env.S3_REGION!,
+        baseUrl: process.env.SUPABASE_BASE_URL!,
+        secret: process.env.SUPABASE_SECRET!,
       },
+      isPublic: true,
     }),
   ],
 })
