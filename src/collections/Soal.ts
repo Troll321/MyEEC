@@ -91,7 +91,12 @@ export const Soal: CollectionConfig = {
         },
       ],
     },
-    { name: "file", type: "upload", relationTo: "files" },
+    {
+      name: "file",
+      type: "upload",
+      relationTo: "files",
+      admin: { description: "Max File Size 4.5 MB" },
+    },
     { name: "deskripsi", type: "richText", required: true },
     {
       name: "jenis",

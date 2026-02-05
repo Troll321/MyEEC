@@ -159,6 +159,9 @@ export interface Soal {
   vote_penyisihan?: (string | User)[] | null;
   vote_semifinal?: (string | User)[] | null;
   vote_final?: (string | User)[] | null;
+  /**
+   * Max File Size 4.5 MB
+   */
   file?: (string | null) | File;
   deskripsi: {
     root: {
@@ -231,11 +234,16 @@ export interface Soal {
   createdAt: string;
 }
 /**
+ * Maximum File Size 4.5 MB
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "files".
  */
 export interface File {
   id: string;
+  /**
+   * Maximum File Size 4.5 MB
+   */
   alt?: string | null;
   prefix?: string | null;
   updatedAt: string;

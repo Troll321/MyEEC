@@ -4,5 +4,5 @@ export const Files: CollectionConfig = {
   slug: "files",
   admin: { description: "Maximum File Size 4.5 MB" },
   upload: { crop: false, focalPoint: false },
-  fields: [{ name: "alt", type: "text" }],
+  fields: [{ name: "alt", type: "text", admin: { description: "Maximum File Size 4.5 MB" } }],
 }

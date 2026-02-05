@@ -7,8 +7,8 @@ import { fileURLToPath } from "url"
 import { Users } from "./collections/Users"
 import { Soal } from "./collections/Soal"
 import { Files } from "./collections/Files"
-import { EquationFeature } from "./plugins/myeqfeature/feature.server"
 import { supabaseStorage } from "unoff-payloadcms-supabase-storage-adapter"
+import { EquationFeature } from "payloadcms-lexical-equation-plugin"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
