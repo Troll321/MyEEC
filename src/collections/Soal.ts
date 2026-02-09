@@ -144,6 +144,12 @@ export const Soal: CollectionConfig = {
       ],
     },
     {
+      name: "penjelasan",
+      type: "richText",
+      admin: { description: "Penjelasan solusi (opsional)" },
+    },
+    { name: "note", type: "richText", admin: { description: "Note untuk problem setter lainnya" } },
+    {
       name: "tag",
       admin: { description: "Tag / Materi / Penanda untuk soal ini" },
       type: "text",

@@ -227,6 +227,42 @@ export interface Soal {
       }
   )[];
   /**
+   * Penjelasan solusi (opsional)
+   */
+  penjelasan?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Note untuk problem setter lainnya
+   */
+  note?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
    * Tag / Materi / Penanda untuk soal ini
    */
   tag?: string[] | null;
@@ -395,6 +431,8 @@ export interface SoalSelect<T extends boolean = true> {
               blockName?: T;
             };
       };
+  penjelasan?: T;
+  note?: T;
   tag?: T;
   updatedAt?: T;
   createdAt?: T;
